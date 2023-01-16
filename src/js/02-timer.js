@@ -14,8 +14,8 @@ const secondsRef = document.querySelector('[data-seconds]');
 const spanRef = document.querySelectorAll('.label');
 const timerRef = document.querySelector('.timer');
 const valueRef = document.querySelectorAll('.value');
-btnRef.setAttribute('disabled', true);
 
+btnRef.setAttribute('disabled', true);
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -37,14 +37,24 @@ btnRef.addEventListener('click', onBtnStart);
 
 function onBtnStart() {
   timerRef.style.display = 'flex';
-  spanRef.forEach(elem => {
-    elem.style.fontSize = '50px';
-    elem.style.color = getRandomHexColor();
-  });
-  valueRef.forEach(elem => {
-    elem.style.fontSize = '50px';
-    elem.style.color = getRandomHexColor();
-  });
+  const intervalColor = setInterval(() => {
+    spanRef.forEach(elem => {
+      elem.style.fontSize = '50px';
+      elem.style.color = getRandomHexColor();
+      elem.style.transition = 'font-size 3000ms';
+      elem.style.background = 'yellow';
+      elem.style.borderRadius = '10%';
+      elem.style.border = 'blue solid 3px';
+    });
+    valueRef.forEach(elem => {
+      elem.style.fontSize = '50px';
+      elem.style.color = getRandomHexColor();
+      elem.style.transition = 'font-size 3000ms';
+      elem.style.background = 'blue';
+      elem.style.borderRadius = '10%';
+      elem.style.border = 'yellow solid 3px';
+    });
+  }, 1000);
 
   const interval = setInterval(() => {
     const startTime = calendar.selectedDates[0];
@@ -52,6 +62,7 @@ function onBtnStart() {
     // console.log(deltaTime);
     if (deltaTime < 0) {
       clearInterval(interval);
+      clearInterval(intervalColor);
     }
     const { days, hours, minutes, seconds } = convertMs(deltaTime);
     daysRef.textContent = addLeadingZero(days);
